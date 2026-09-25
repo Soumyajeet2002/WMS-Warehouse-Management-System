@@ -1,134 +1,115 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 import ModulePlaceholder from '../pages/ModulePlaceholder';
+
+import Warehouses from '../pages/warehouses/Warehouses';
+
 import DashboardLayout from '../layouts/DashboardLayout';
 
 const AppRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
-                {/* Public */}
+                {/* Public Routes */}
                 <Route path="/login" element={<Login />} />
 
-                {/* Dashboard */}
-                <Route
-                    path="/dashboard"
-                    element={
-                        <DashboardLayout>
-                            <Dashboard />
-                        </DashboardLayout>
-                    }
-                />
+                {/* Application Routes */}
+                <Route element={<DashboardLayout />}>
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
 
-                {/* Warehouses */}
-                <Route
-                    path="/warehouses"
-                    element={
-                        <DashboardLayout>
-                            <ModulePlaceholder
-                                title="Warehouses"
-                                description="Manage your warehouses and warehouse locations."
-                            />
-                        </DashboardLayout>
-                    }
-                />
+                    <Route
+                        path="/warehouses"
+                        element={<Warehouses />}
+                    />
 
-                {/* Products */}
-                <Route
-                    path="/products"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/products"
+                        element={
                             <ModulePlaceholder
                                 title="Products"
                                 description="Manage products and SKUs."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Inventory */}
-                <Route
-                    path="/inventory"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/inventory"
+                        element={
                             <ModulePlaceholder
                                 title="Inventory"
                                 description="Monitor and manage warehouse inventory."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Receiving */}
-                <Route
-                    path="/receiving"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/receiving"
+                        element={
                             <ModulePlaceholder
                                 title="Receiving"
                                 description="Manage inbound stock and receiving operations."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Picking */}
-                <Route
-                    path="/picking"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/picking"
+                        element={
                             <ModulePlaceholder
                                 title="Picking"
                                 description="Manage picking operations and pick lists."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Shipping */}
-                <Route
-                    path="/shipping"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/shipping"
+                        element={
                             <ModulePlaceholder
                                 title="Shipping"
                                 description="Manage outbound shipments."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Users */}
-                <Route
-                    path="/users"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/users"
+                        element={
                             <ModulePlaceholder
                                 title="Users"
                                 description="Manage system users and roles."
                             />
-                        </DashboardLayout>
-                    }
-                />
+                        }
+                    />
 
-                {/* Settings */}
-                <Route
-                    path="/settings"
-                    element={
-                        <DashboardLayout>
+                    <Route
+                        path="/settings"
+                        element={
                             <ModulePlaceholder
                                 title="Settings"
                                 description="Configure your warehouse management system."
                             />
-                        </DashboardLayout>
-                    }
+                        }
+                    />
+                </Route>
+
+                {/* Default Route */}
+                <Route
+                    path="/"
+                    element={<Navigate to="/dashboard" replace />}
                 />
 
                 {/* 404 */}
-                <Route path="*" element={<NotFound />} />
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
             </Routes>
         </BrowserRouter>
     );

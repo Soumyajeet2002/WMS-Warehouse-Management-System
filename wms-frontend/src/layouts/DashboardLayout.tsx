@@ -1,13 +1,10 @@
 import { Box } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
 import Sidebar from '../components/layout/Sidebar';
 import Topbar from '../components/layout/Topbar';
 
-interface DashboardLayoutProps {
-    children: React.ReactNode;
-}
-
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const DashboardLayout = () => {
     return (
         <Box
             sx={{
@@ -36,7 +33,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                         overflow: 'auto',
                     }}
                 >
-                    {children}
+                    <Outlet />
                 </Box>
             </Box>
         </Box>
