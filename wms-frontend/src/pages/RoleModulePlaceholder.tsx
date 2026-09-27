@@ -1,17 +1,27 @@
 import { Box, Card, CardContent, Typography } from '@mui/material';
+import { useAuth } from '../context/AuthContext';
 
-interface ModulePlaceholderProps {
+interface RoleModulePlaceholderProps {
   title: string;
-  description: string;
+  adminDescription: string;
+  vendorDescription: string;
 }
 
-const ModulePlaceholder = ({
+const RoleModulePlaceholder = ({
   title,
-  description,
-}: ModulePlaceholderProps) => {
+  adminDescription,
+  vendorDescription,
+}: RoleModulePlaceholderProps) => {
+  const { user } = useAuth();
+
+  const description =
+    user?.role === 'ADMIN'
+      ? adminDescription
+      : vendorDescription;
+
   return (
     <Box>
-      <Typography variant="h5" sx={{fontWeight:700}}>
+      <Typography variant="h5" sx={{ fontWeight:700}}>
         {title}
       </Typography>
 
@@ -42,4 +52,4 @@ const ModulePlaceholder = ({
   );
 };
 
-export default ModulePlaceholder;
+export default RoleModulePlaceholder;

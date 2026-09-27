@@ -1,4 +1,5 @@
 import React from 'react';
+
 import api from '../services/api';
 
 export type UserRole = 'ADMIN' | 'VENDOR';
@@ -14,7 +15,7 @@ interface AuthContextType {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   logout: () => void;
 }
 
@@ -46,7 +47,10 @@ export const AuthProvider = ({
     () => localStorage.getItem('access_token'),
   );
 
-  const login = async (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string,
+  ): Promise<User> => {
     const response = await api.post('/auth/login', {
       email,
       password,
@@ -59,6 +63,8 @@ export const AuthProvider = ({
 
     setAccessToken(accessToken);
     setUser(user);
+
+    return user;
   };
 
   const logout = () => {
@@ -93,3 +99,4 @@ export const useAuth = () => {
 
   return context;
 };
+
