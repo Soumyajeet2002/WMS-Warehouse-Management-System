@@ -121,6 +121,11 @@ const vendorNavigation: NavigationGroup[] = [
     section: "MY BUSINESS",
     items: [
       {
+        label: "Warehouses",
+        path: "/warehouses",
+        icon: <WarehouseOutlinedIcon />,
+      },
+      {
         label: "Products",
         path: "/products",
         icon: <StorefrontOutlinedIcon />,

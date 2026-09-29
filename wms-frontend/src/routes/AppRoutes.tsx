@@ -1,22 +1,23 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import Login from '../pages/Login';
-import NotFound from '../pages/NotFound';
+import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 
-import DashboardLayout from '../layouts/DashboardLayout';
+import DashboardLayout from "../layouts/DashboardLayout";
 
-import ProtectedRoute from './ProtectedRoute';
-import RoleRoute from './RoleRoute';
+import ProtectedRoute from "./ProtectedRoute";
+import RoleRoute from "./RoleRoute";
 
-import AdminDashboard from '../pages/admin/AdminDashboard';
-import VendorDashboard from '../pages/vendor/VendorDashboard';
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import VendorDashboard from "../pages/vendor/VendorDashboard";
 
-import ModulePlaceholder from '../pages/ModulePlaceholder';
-import RoleModulePlaceholder from '../pages/RoleModulePlaceholder';
+import ModulePlaceholder from "../pages/ModulePlaceholder";
+import RoleModulePlaceholder from "../pages/RoleModulePlaceholder";
+import Warehouses from "../pages/warehouses/Warehouses";
 
-import Vendors from '../pages/admin/Vendors';
+import Vendors from "../pages/admin/Vendors";
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 
 const HomeRedirect = () => {
   const { user, isAuthenticated } = useAuth();
@@ -25,11 +26,11 @@ const HomeRedirect = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role === 'ADMIN') {
+  if (user.role === "ADMIN") {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  if (user.role === 'VENDOR') {
+  if (user.role === "VENDOR") {
     return <Navigate to="/vendor/dashboard" replace />;
   }
 
@@ -46,39 +47,19 @@ const AppRoutes = () => {
         {/* PROTECTED ROUTES */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-
             {/* ADMIN DASHBOARD */}
-            <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
-              <Route
-                path="/admin/dashboard"
-                element={<AdminDashboard />}
-              />
+            <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Route>
 
             {/* VENDOR DASHBOARD */}
-            <Route element={<RoleRoute allowedRoles={['VENDOR']} />}>
-              <Route
-                path="/vendor/dashboard"
-                element={<VendorDashboard />}
-              />
+            <Route element={<RoleRoute allowedRoles={["VENDOR"]} />}>
+              <Route path="/vendor/dashboard" element={<VendorDashboard />} />
             </Route>
 
             {/* ADMIN ONLY MODULES */}
-            <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
-              <Route
-                path="/vendors"
-                element={<Vendors />}
-              />
-
-              <Route
-                path="/warehouses"
-                element={
-                  <ModulePlaceholder
-                    title="Warehouses"
-                    description="Manage warehouse locations and storage facilities."
-                  />
-                }
-              />
+            <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/vendors" element={<Vendors />} />
 
               <Route
                 path="/receiving"
@@ -122,11 +103,7 @@ const AppRoutes = () => {
             </Route>
 
             {/* SHARED ROLE-AWARE MODULES */}
-            <Route
-              element={
-                <RoleRoute allowedRoles={['ADMIN', 'VENDOR']} />
-              }
-            >
+            <Route element={<RoleRoute allowedRoles={["ADMIN", "VENDOR"]} />}>
               <Route
                 path="/products"
                 element={
@@ -137,6 +114,7 @@ const AppRoutes = () => {
                   />
                 }
               />
+              <Route path="/warehouses" element={<Warehouses />} />
 
               <Route
                 path="/inventory"
@@ -162,7 +140,7 @@ const AppRoutes = () => {
             </Route>
 
             {/* VENDOR ONLY MODULES */}
-            <Route element={<RoleRoute allowedRoles={['VENDOR']} />}>
+            <Route element={<RoleRoute allowedRoles={["VENDOR"]} />}>
               <Route
                 path="/orders"
                 element={
@@ -183,7 +161,6 @@ const AppRoutes = () => {
                 }
               />
             </Route>
-
           </Route>
         </Route>
 
@@ -198,4 +175,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-

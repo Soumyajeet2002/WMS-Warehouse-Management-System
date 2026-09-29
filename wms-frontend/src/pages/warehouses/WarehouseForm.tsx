@@ -1,220 +1,183 @@
+import React from "react";
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from '@mui/material';
-import React from 'react';
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 
-interface WarehouseFormData {
-    name: string;
-    code: string;
-    address: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-    status: 'Active' | 'Inactive';
+export interface WarehouseFormData {
+  code: string;
+  name: string;
+  address: string;
 }
 
 interface WarehouseFormProps {
-    open: boolean;
-    onClose: () => void;
-    onSubmit: (data: WarehouseFormData) => void;
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (data: WarehouseFormData) => void;
 }
 
 const WarehouseForm = ({
-    open,
-    onClose,
-    onSubmit,
+  open,
+  onClose,
+  onSubmit,
 }: WarehouseFormProps) => {
-    const [formData, setFormData] = React.useState<WarehouseFormData>({
-        name: '',
-        code: '',
-        address: '',
-        city: '',
-        state: '',
-        country: '',
-        postalCode: '',
-        status: 'Active',
+  const [formData, setFormData] =
+    React.useState<WarehouseFormData>({
+      code: "",
+      name: "",
+      address: "",
     });
 
-    const handleChange = (
-        field: keyof WarehouseFormData,
-        value: string,
-    ) => {
-        setFormData((previous) => ({
-            ...previous,
-            [field]: value,
-        }));
-    };
+  const [error, setError] = React.useState("");
 
-    const handleSubmit = () => {
-        if (!formData.name.trim()) {
-            return;
-        }
+  const handleChange = (
+    field: keyof WarehouseFormData,
+    value: string,
+  ) => {
+    setFormData((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
 
-        if (!formData.code.trim()) {
-            return;
-        }
+    setError("");
+  };
 
-        onSubmit(formData);
+  const handleSubmit = () => {
+    if (!formData.code.trim()) {
+      setError("Warehouse code is required.");
+      return;
+    }
 
-        setFormData({
-            name: '',
-            code: '',
-            address: '',
-            city: '',
-            state: '',
-            country: '',
-            postalCode: '',
-            status: 'Active',
-        });
-    };
+    if (!formData.name.trim()) {
+      setError("Warehouse name is required.");
+      return;
+    }
 
-    return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            fullWidth
-            maxWidth="sm"
+    onSubmit({
+      code: formData.code.trim(),
+      name: formData.name.trim(),
+      address: formData.address.trim(),
+    });
+
+    setFormData({
+      code: "",
+      name: "",
+      address: "",
+    });
+
+    setError("");
+  };
+
+  const handleClose = () => {
+    setFormData({
+      code: "",
+      name: "",
+      address: "",
+    });
+
+    setError("");
+    onClose();
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogTitle
+        sx={{
+          fontWeight: 700,
+        }}
+      >
+        Add Warehouse
+      </DialogTitle>
+
+      <DialogContent>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            pt: 1,
+          }}
         >
-            <DialogTitle>
-                Add Warehouse
-            </DialogTitle>
+          <TextField
+            label="Warehouse Code"
+            placeholder="WH-001"
+            value={formData.code}
+            onChange={(event) =>
+              handleChange("code", event.target.value)
+            }
+            fullWidth
+            required
+            autoFocus
+          />
 
-            <DialogContent>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: {
-                            xs: '1fr',
-                            sm: '1fr 1fr',
-                        },
-                        gap: 2,
-                        pt: 1,
-                    }}
-                >
-                    <TextField
-                        label="Warehouse Name"
-                        value={formData.name}
-                        onChange={(event) =>
-                            handleChange('name', event.target.value)
-                        }
-                        fullWidth
-                        required
-                    />
+          <TextField
+            label="Warehouse Name"
+            placeholder="Main Warehouse"
+            value={formData.name}
+            onChange={(event) =>
+              handleChange("name", event.target.value)
+            }
+            fullWidth
+            required
+          />
 
-                    <TextField
-                        label="Warehouse Code"
-                        value={formData.code}
-                        onChange={(event) =>
-                            handleChange('code', event.target.value)
-                        }
-                        fullWidth
-                        required
-                    />
+          <TextField
+            label="Address"
+            placeholder="Bhubaneswar, Odisha, India"
+            value={formData.address}
+            onChange={(event) =>
+              handleChange("address", event.target.value)
+            }
+            fullWidth
+            multiline
+            minRows={3}
+          />
 
-                    <TextField
-                        label="Address"
-                        value={formData.address}
-                        onChange={(event) =>
-                            handleChange('address', event.target.value)
-                        }
-                        fullWidth
-                        sx={{
-                            gridColumn: {
-                                xs: 'auto',
-                                sm: '1 / -1',
-                            },
-                        }}
-                    />
+          {error && (
+            <Box
+              sx={{
+                color: "error.main",
+                fontSize: 13,
+              }}
+            >
+              {error}
+            </Box>
+          )}
+        </Box>
+      </DialogContent>
 
-                    <TextField
-                        label="City"
-                        value={formData.city}
-                        onChange={(event) =>
-                            handleChange('city', event.target.value)
-                        }
-                        fullWidth
-                    />
+      <DialogActions
+        sx={{
+          px: 3,
+          pb: 2,
+        }}
+      >
+        <Button
+          onClick={handleClose}
+          color="inherit"
+        >
+          Cancel
+        </Button>
 
-                    <TextField
-                        label="State"
-                        value={formData.state}
-                        onChange={(event) =>
-                            handleChange('state', event.target.value)
-                        }
-                        fullWidth
-                    />
-
-                    <TextField
-                        label="Country"
-                        value={formData.country}
-                        onChange={(event) =>
-                            handleChange('country', event.target.value)
-                        }
-                        fullWidth
-                    />
-
-                    <TextField
-                        label="Postal Code"
-                        value={formData.postalCode}
-                        onChange={(event) =>
-                            handleChange('postalCode', event.target.value)
-                        }
-                        fullWidth
-                    />
-
-                    <FormControl fullWidth>
-                        <InputLabel>Status</InputLabel>
-
-                        <Select
-                            label="Status"
-                            value={formData.status}
-                            onChange={(event) =>
-                                handleChange(
-                                    'status',
-                                    event.target.value,
-                                )
-                            }
-                        >
-                            <MenuItem value="Active">
-                                Active
-                            </MenuItem>
-
-                            <MenuItem value="Inactive">
-                                Inactive
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-            </DialogContent>
-
-            <DialogActions sx={{ px: 3, pb: 2 }}>
-                <Button
-                    onClick={onClose}
-                    color="inherit"
-                >
-                    Cancel
-                </Button>
-
-                <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                >
-                    Create Warehouse
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+        >
+          Create Warehouse
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 export default WarehouseForm;
